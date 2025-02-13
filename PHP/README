@@ -1,0 +1,167 @@
+
+---
+
+# AES Encryption and Decryption Class
+
+This PHP class provides functionality for AES encryption and decryption using the **AES-128-ECB** cipher. It allows you to encrypt and decrypt strings with a provided secret key.
+
+## Features
+- **Encrypt**: Encrypt plaintext data using AES-128-ECB encryption.
+- **Decrypt**: Decrypt base64-encoded ciphertext back to the original plaintext.
+- **Base64 Encoding**: The encrypted data is returned as a base64-encoded string for easy handling.
+  
+---
+
+## Requirements
+
+- **PHP 7.1 or higher** for `openssl` extension.
+- Ensure that the **OpenSSL** extension is enabled in your PHP installation.
+
+---
+
+## How to Use
+
+### 1. Encryption Example
+
+To encrypt a string of data, simply call the `encryptAES` method with the plaintext data and a secret key. The function will return the encrypted data as a base64-encoded string.
+
+```php
+$data = 'Testing';  // The data to be encrypted
+$secretKey = "=FIQpAaQHXRHelgGiCgPliXDtuaWHpywZFDwmNtOPeRyYOtGUFw";  // The secret key
+
+// Encrypt the data
+$encryptedData = AESEncryptionDecryptionClass::encryptAES($data, $secretKey);
+echo "Encrypted data: \n" . $encryptedData . "\n";
+```
+
+### 2. Decryption Example
+
+To decrypt a previously encrypted string, call the `decryptAES` method with the encrypted data and the same secret key used during encryption. The function will return the original plaintext.
+
+```php
+// Decrypt the encrypted data
+$decryptedData = AESEncryptionDecryptionClass::decryptAES($encryptedData, $secretKey);
+echo "Decrypted data: \n" . $decryptedData . "\n";
+```
+
+---
+
+## Class Methods
+
+### 1. `encryptAES($strToEncrypt, $secret)`
+
+Encrypts the provided plaintext string using AES-128-ECB encryption.
+
+- **Parameters**:
+  - `$strToEncrypt` (string): The plaintext string you wish to encrypt.
+  - `$secret` (string): The secret key used for encryption.
+  
+- **Returns**:
+  - A base64-encoded string representing the encrypted data.
+
+### 2. `decryptAES($strToDecrypt, $secret)`
+
+Decrypts the provided base64-encoded ciphertext back to the original plaintext string.
+
+- **Parameters**:
+  - `$strToDecrypt` (string): The base64-encoded encrypted data.
+  - `$secret` (string): The secret key used for decryption (must be the same as the key used for encryption).
+  
+- **Returns**:
+  - The decrypted plaintext string.
+
+---
+
+## Key Generation
+
+To generate a 128-bit AES key encoded in base64, you can use the following PHP function:
+
+```php
+function generateBase64AESKey() {
+    $randomKey = random_bytes(16);  // AES-128 requires a 16-byte key
+    return base64_encode($randomKey);  // Returns a base64-encoded key
+}
+```
+
+This will return a **base64-encoded key** which can be used with the `encryptAES` and `decryptAES` methods.
+
+---
+
+## Security Considerations
+
+- **ECB Mode**: The AES-128-ECB cipher mode is used here. While ECB is fast and simple, it has known weaknesses such as not providing semantic security (patterns in the ciphertext may reveal information about the plaintext). For more secure encryption, consider using AES with CBC (Cipher Block Chaining) or GCM modes.
+
+- **Key Management**: Make sure to store the encryption key securely. Never hardcode sensitive keys in production code. Consider using environment variables or a secure key management system.
+
+---
+
+## Example Code
+
+```php
+<?php
+
+class AESEncryptionDecryptionClass {
+    private static $key;
+    private static $secretKey;
+
+    // Encrypt method
+    public static function encryptAES($strToEncrypt, $secret) {
+        try {
+            self::setKey($secret);
+            $cipher = "AES-128-ECB";
+            return base64_encode(openssl_encrypt($strToEncrypt, $cipher, self::$secretKey, OPENSSL_RAW_DATA));
+        } catch (Exception $e) {
+            echo "Error while encrypting: " . $e->getMessage();
+        }
+        return null;
+    }
+
+    // Decrypt method
+    public static function decryptAES($strToDecrypt, $secret) {
+        try {
+            self::setKey($secret);
+            $cipher = "AES-128-ECB";
+            return openssl_decrypt(base64_decode($strToDecrypt), $cipher, self::$secretKey, OPENSSL_RAW_DATA);
+        } catch (Exception $e) {
+            echo "Error while decrypting: " . $e->getMessage();
+        }
+        return null;
+    }
+
+    // Set the key for encryption/decryption
+    private static function setKey($myKey) {
+        try {
+            self::$key = substr(hash('sha1', $myKey, true), 0, 16);
+            self::$secretKey = self::$key;
+        } catch (Exception $e) {
+            echo "Error setting key: " . $e->getMessage();
+        }
+    }
+}
+
+// Example usage
+
+$data = 'Testing';  // Your plaintext data
+$secretKey = "";  // Your secret key
+
+// Encrypt the data
+$encryptedData = AESEncryptionDecryptionClass::encryptAES($data, $secretKey);
+echo "Encrypted data: \n" . $encryptedData . "\n\n";
+
+// Decrypt the encrypted data
+$decryptedData = AESEncryptionDecryptionClass::decryptAES($encryptedData, $secretKey);
+echo "Decrypted data: \n" . $decryptedData . "\n";
+?>
+```
+
+---
+
+## License
+
+This code is provided as-is with no warranty. You are free to use, modify, and distribute it according to your needs.
+
+---
+
+Security Considerations
+ECB Mode: AES-128-ECB is used here, but it is not recommended for highly sensitive data. Consider using AES with CBC or GCM modes for better security.
+Key Management: Keep the encryption key secure and avoid hardcoding it in production.

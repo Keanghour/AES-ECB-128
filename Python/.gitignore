@@ -1,0 +1,53 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+
+# Editor backups
+*~
+*.swp
+*.swo
+
+# IDE directories (e.g. VSCode, PyCharm)
+.vscode/
+.idea/
+
+# Python package directories
+*.egg-info/
+*.dist-info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Sensitive files (to avoid checking in keys, passwords, etc.)
+secret.key
+*.pem
+*.key
+
+# Test output directories
+nosetests.xml
+coverage.xml
+*.cover
+*.hypothesis/
+
+# Distribution packages
+build/
+dist/
+*.tar.gz
+*.zip
+*.whl
+
+# PyInstaller
+# Uncomment the following line if you use PyInstaller to package your project
+# /dist/
+# /build/
+
+# MacOS-specific
+.DS_Store

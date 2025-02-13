@@ -89,12 +89,11 @@ This README provides a succinct description of your `Helper.java` class along wi
 - Email: phokeanghour12@gmail.com
 - Telegram: [@phokeanghour](https://t.me/phokeanghour)
 
+---
+
 <a href="https://t.me/phokeanghour" target="_blank" rel="noreferrer">
     <img src="https://www.vectorlogo.zone/logos/telegram/telegram-ar21.svg" />
 </a>
-
----
-
 <a href="https://www.linkedin.com/in/pho-keanghour-27133b21b/" target="_blank" rel="noreferrer">
     <img src="https://www.vectorlogo.zone/logos/linkedin/linkedin-ar21.svg" />
 </a>
